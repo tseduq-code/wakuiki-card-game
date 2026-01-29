@@ -1,5 +1,7 @@
 import { Trophy, Heart, Gift as GiftIcon } from 'lucide-react';
 import { Player, Gift } from '../lib/supabase';
+import { deduplicateHandStrings } from '../lib/gameUtils';
+import { Card } from './Card';
 
 interface GameCompleteProps {
   players: Player[];
@@ -51,6 +53,17 @@ export function GameComplete({ players, gifts, purposeCard }: GameCompleteProps)
                       <span className="text-4xl font-bold text-blue-600">
                         {player.final_resonance_percentage ?? 50}%
                       </span>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="text-sm font-medium text-gray-700 mb-3">集めたカード</p>
+                      <div className="flex flex-wrap gap-3 justify-center">
+                        {(player.hand?.length
+                          ? deduplicateHandStrings(player.hand).map((card, cardIndex) => (
+                              <Card key={`${player.id}-${card}-${cardIndex}`} text={card} disabled />
+                            ))
+                          : null) ?? <p className="text-gray-500 text-sm">手札データがありません</p>}
+                      </div>
                     </div>
 
                     {gifts.length > 0 && (
