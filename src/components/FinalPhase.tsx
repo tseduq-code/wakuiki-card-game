@@ -415,6 +415,19 @@ export function FinalPhase({
                     </h3>
 
                     <div className="mb-6">
+                      <h4 className="font-medium text-sm text-gray-700 mb-3 text-center">
+                        {turnPlayer?.preferred_name || turnPlayer?.name}さんの手札（価値観）
+                      </h4>
+                      <div className="flex gap-3 justify-center flex-wrap mb-4">
+                        {(turnPlayer?.hand?.length
+                          ? deduplicateHandStrings(turnPlayer.hand).map((card, index) => (
+                              <Card key={`${turnPlayer.id}-refl-${card}-${index}`} text={card} disabled />
+                            ))
+                          : null) ?? <p className="text-gray-500">手札を読み込み中...</p>}
+                      </div>
+                    </div>
+
+                    <div className="mb-6">
                       <h4 className="font-medium text-sm text-gray-700 mb-3">みんなから届いたメッセージ</h4>
                       <div className="space-y-3">
                         {currentPlayer?.final_gifts_received?.map((gift: any, index: number) => (
@@ -460,6 +473,19 @@ export function FinalPhase({
                       <MessageSquare className="w-5 h-5 inline mr-2" />
                       {turnPlayer?.preferred_name || turnPlayer?.name}さんに届いたメッセージ（みんなで共有中）
                     </h3>
+
+                    <div className="mb-6">
+                      <h4 className="font-medium text-sm text-gray-700 mb-3 text-center">
+                        {turnPlayer?.preferred_name || turnPlayer?.name}さんの手札（価値観）
+                      </h4>
+                      <div className="flex gap-3 justify-center flex-wrap mb-4">
+                        {(turnPlayer?.hand?.length
+                          ? deduplicateHandStrings(turnPlayer.hand).map((card, index) => (
+                              <Card key={`${turnPlayer.id}-refl-obs-${card}-${index}`} text={card} disabled />
+                            ))
+                          : null) ?? <p className="text-gray-500">手札を読み込み中...</p>}
+                      </div>
+                    </div>
 
                     <div className="mb-6">
                       <div className="space-y-3">
