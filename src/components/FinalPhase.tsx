@@ -57,7 +57,7 @@ export function FinalPhase({
       }
     } catch (error) {
       console.error('Error sharing resonance:', error);
-      alert('響き合いの共有に失敗しました');
+      alert('テーマとのマッチ度の共有に失敗しました');
     } finally {
       setIsProcessing(false);
     }
@@ -115,7 +115,7 @@ export function FinalPhase({
   const getStepDisplay = () => {
     switch (finalPhaseStep) {
       case 'sharing':
-        return { icon: Heart, text: '響き合いの共有', color: 'green' };
+        return { icon: Heart, text: 'テーマとのマッチ度の共有', color: 'green' };
       case 'gifting':
         return { icon: GiftIcon, text: 'ギフトを贈る', color: 'blue' };
       case 'reflection':
@@ -165,7 +165,7 @@ export function FinalPhase({
                   最終フェーズ - {stepDisplay.text}
                 </h2>
                 <p className="text-gray-600">
-                  1ターン = 響き合い共有 → ギフトプレゼント → 感想共有
+                  1ターン = マッチ度共有 → ギフトプレゼント → 感想共有
                 </p>
               </div>
 
@@ -174,7 +174,7 @@ export function FinalPhase({
                   <div className="bg-green-50 p-6 rounded-xl border-2 border-green-200">
                     <h3 className="font-bold text-lg text-gray-800 mb-4 text-center">
                       <Heart className="w-5 h-5 inline mr-2" />
-                      あなたのターン：響き合いを共有してください
+                      あなたのターン：テーマとのマッチ度を共有してください
                     </h3>
 
                     <div className="mb-6">
@@ -193,7 +193,7 @@ export function FinalPhase({
                     <div className="bg-white p-8 rounded-lg border-2 border-gray-200 mb-6">
                       <label className="block text-center mb-4">
                         <span className="text-lg font-bold text-gray-800 block mb-2">
-                          響き合いのマッチ度
+                          テーマとのマッチ度
                         </span>
                         <span className="text-6xl font-bold text-blue-600">{percentage}%</span>
                       </label>
@@ -217,18 +217,18 @@ export function FinalPhase({
                       disabled={isProcessing}
                       className="w-full bg-green-600 text-white py-4 px-6 rounded-lg font-bold hover:bg-green-700 disabled:bg-gray-400 transition shadow-md hover:shadow-lg text-lg"
                     >
-                      {isProcessing ? '送信中...' : '響き合いを共有する'}
+                      {isProcessing ? '送信中...' : 'テーマとのマッチ度を共有する'}
                     </button>
 
                     <p className="text-sm text-gray-600 text-center mt-4">
-                      共有後、口頭で響き合いについて詳しく説明してください
+                      共有後、口頭でマッチした理由について詳しく説明してください
                     </p>
                   </div>
                 ) : (
                   <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
                     <h3 className="font-bold text-lg text-gray-800 mb-4 text-center">
                       <Heart className="w-5 h-5 inline mr-2" />
-                      {turnPlayer?.preferred_name || turnPlayer?.name}さんが響き合いを共有中
+                      {turnPlayer?.preferred_name || turnPlayer?.name}さんがテーマとのマッチ度を共有中
                     </h3>
 
                     <div className="mb-6">
@@ -332,7 +332,7 @@ export function FinalPhase({
 
                       <div className="mb-6 bg-white p-4 rounded-lg border-2 border-gray-200 text-center">
                         <p className="text-sm text-gray-600 mb-3 font-medium">
-                          {turnPlayer?.preferred_name || turnPlayer?.name}さんの響き合いのマッチ度
+                          {turnPlayer?.preferred_name || turnPlayer?.name}さんのテーマとのマッチ度
                         </p>
                         <div className="bg-blue-50 p-4 rounded-lg inline-block">
                           <span className="text-5xl font-bold text-blue-600">
@@ -350,7 +350,7 @@ export function FinalPhase({
                           onChange={(e) => setGiftMessage(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition resize-none"
                           rows={5}
-                          placeholder={`${turnPlayer?.preferred_name || turnPlayer?.name}さんの響き合いについて、あなたの想いや応援メッセージを自由に書いてください。`}
+                          placeholder={`${turnPlayer?.preferred_name || turnPlayer?.name}さんのテーマとのマッチ度について、あなたの想いや応援メッセージを自由に書いてください。`}
                           maxLength={500}
                         />
                         <p className="text-sm text-gray-500 mt-1">{giftMessage.length}/500</p>
@@ -554,7 +554,7 @@ export function FinalPhase({
 
                       {player.has_shared_final_resonance && (
                         <div className="text-xs text-gray-600 mb-1">
-                          ✓ 響き合い共有済み
+                          ✓ マッチ度共有済み
                         </div>
                       )}
                       {player.final_reflection_text && (

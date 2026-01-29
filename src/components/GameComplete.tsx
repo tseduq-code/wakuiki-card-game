@@ -31,7 +31,7 @@ export function GameComplete({ players, gifts, purposeCard }: GameCompleteProps)
           <div className="mb-8">
             <div className="flex items-center justify-center gap-3 mb-6">
               <Heart className="w-8 h-8 text-green-600" />
-              <h3 className="text-2xl font-bold text-gray-800">響き合いとメッセージの記録</h3>
+              <h3 className="text-2xl font-bold text-gray-800">テーマとのマッチ度とメッセージの記録</h3>
             </div>
 
             <div className="space-y-6">
@@ -49,7 +49,7 @@ export function GameComplete({ players, gifts, purposeCard }: GameCompleteProps)
                     </div>
 
                     <div className="bg-white p-4 rounded-lg border-2 border-gray-200 mb-4 text-center">
-                      <span className="text-sm font-medium text-gray-600 block mb-2">響き合いのマッチ度</span>
+                      <span className="text-sm font-medium text-gray-600 block mb-2">テーマとのマッチ度</span>
                       <span className="text-4xl font-bold text-blue-600">
                         {player.final_resonance_percentage ?? 50}%
                       </span>

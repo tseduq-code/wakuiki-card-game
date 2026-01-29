@@ -71,5 +71,16 @@ function assert36UniqueDeck(cards: readonly string[]): void {
 
 assert36UniqueDeck(CARD_LIST);
 
+/** 36種類のユニークなカード名のみを返す（重複排除・枚数保証）。デッキ生成時に使用 */
+export function getUniqueCardList(): string[] {
+  const unique = [...new Set(CARD_LIST)];
+  if (unique.length !== EXPECTED_DECK_SIZE) {
+    throw new Error(
+      `[cards] getUniqueCardList: ${EXPECTED_DECK_SIZE} 枚である必要があります（重複排除後: ${unique.length} 枚）`
+    );
+  }
+  return unique;
+}
+
 /** @deprecated CARD_LIST を使用してください */
 export const valueCards = [...CARD_LIST];
