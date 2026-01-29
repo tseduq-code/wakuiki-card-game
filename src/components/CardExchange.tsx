@@ -45,14 +45,18 @@ export function CardExchange({ room, players, currentPlayerId, exchangeActions }
   /** 交換/スキップ成功時に即座に次のターンへ進む（DB更新 or 遷移画面表示） */
   async function advanceToNextTurn() {
     const nextTurnNumber = room.current_exchange_turn + 1;
+
     if (nextTurnNumber >= activePlayers.length) {
+      // 最後のプレイヤーまで終了 → フェーズを次へ（遷移画面を表示し、5秒後に status を playing に更新）
       setShowTransitionScreen(true);
       return;
     }
+
     const { error } = await supabase
       .from('game_rooms')
       .update({ current_exchange_turn: nextTurnNumber })
       .eq('id', room.id);
+
     if (error) {
       console.error('Error moving to next turn:', error);
       setExchangeError('次のターンへ進めませんでした。しばらくしてから再度お試しください。');

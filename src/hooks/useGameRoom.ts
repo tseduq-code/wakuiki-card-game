@@ -33,6 +33,7 @@ export function useGameRoom(roomId: string | null) {
         const statusChanged = prevRoom && prevRoom.status !== roomData.status;
         const idChanged = prevRoom && prevRoom.id !== roomData.id;
         const updatedAtChanged = prevRoom && prevRoom.updated_at !== roomData.updated_at;
+        const exchangeTurnChanged = prevRoom && prevRoom.current_exchange_turn !== roomData.current_exchange_turn;
         
         if (statusChanged) {
           console.info('🔀 [useGameRoom] ステータス変更を検知:', prevRoom.status, '→', roomData.status);
@@ -44,9 +45,8 @@ export function useGameRoom(roomId: string | null) {
           });
         }
         
-        // Always return a new object reference to ensure React detects the change
-        // Even if status hasn't changed, return new object if updated_at changed
-        if (statusChanged || idChanged || updatedAtChanged || !prevRoom) {
+        // Always return a new object when any relevant field changes (status, turn, updated_at)
+        if (statusChanged || idChanged || updatedAtChanged || exchangeTurnChanged || !prevRoom) {
           return { ...roomData };
         }
         

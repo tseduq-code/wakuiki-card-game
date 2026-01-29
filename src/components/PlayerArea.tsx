@@ -10,6 +10,8 @@ interface PlayerAreaProps {
   onCardClick?: (cardIndex: number) => void;
   selectedCardIndex?: number;
   lastDrawnCardInstance?: CardInstance | null;
+  /** 表示用手札（ドロー直後の4枚表示用。未指定時は player.hand） */
+  displayHand?: string[];
   guidanceText?: string;
 }
 
@@ -18,18 +20,20 @@ function generateCardInstanceId(playerId: string, cardName: string, index: numbe
   return `${playerId}-${cardName}-${index}`;
 }
 
-export function PlayerArea({ player, position, isCurrentTurn, onCardClick, selectedCardIndex, lastDrawnCardInstance, guidanceText }: PlayerAreaProps) {
+export function PlayerArea({ player, position, isCurrentTurn, onCardClick, selectedCardIndex, lastDrawnCardInstance, displayHand, guidanceText }: PlayerAreaProps) {
   const isVertical = position === 'left' || position === 'right';
   const displayName = player.preferred_name || player.name;
 
+  const handToShow = displayHand ?? player.hand ?? [];
+
   // Convert hand strings to CardInstance objects with stable instanceIds
   const cardInstances = useMemo(() => {
-    if (!player.hand?.length) return [];
+    if (!handToShow.length) return [];
     
     // Track seen card names to detect duplicates
     const seenNames = new Map<string, number>();
     
-    const instances = player.hand.map((cardName, index) => {
+    const instances = handToShow.map((cardName, index) => {
       const occurrence = seenNames.get(cardName) || 0;
       seenNames.set(cardName, occurrence + 1);
       
@@ -45,7 +49,7 @@ export function PlayerArea({ player, position, isCurrentTurn, onCardClick, selec
 
     // UI層の防御: instanceId（なければ name）に基づく重複排除
     return deduplicateCards(instances);
-  }, [player.id, player.hand]);
+  }, [player.id, handToShow]);
 
   return (
     <div className="w-full max-w-xs mx-auto">

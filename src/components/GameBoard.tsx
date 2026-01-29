@@ -67,6 +67,12 @@ export function GameBoard({ room, players, currentPlayerId }: GameBoardProps) {
   const totalRoundsThisPhase = isFirstPhase ? 3 : 2;
   const currentRoundDisplay = Math.min(room.round_number + 1, totalRoundsThisPhase);
 
+  // ドロー直後は Realtime で hand がまだ 3 枚のことがあるため、表示用手札を 4 枚に補正する
+  const effectiveHand =
+    currentPlayer && lastDrawnCardInstance && (currentPlayer.hand?.length ?? 0) === 3
+      ? [...(currentPlayer.hand || []), lastDrawnCardInstance.name]
+      : (currentPlayer?.hand || []);
+
   useEffect(() => {
     // プレイヤーのターンが切り替わるたびにローカル状態をリセット
     setHasDrawn(false);
@@ -175,7 +181,8 @@ export function GameBoard({ room, players, currentPlayerId }: GameBoardProps) {
 
     if (!currentPlayer) return;
 
-    const cardToDiscard = currentPlayer.hand[cardIndex];
+    const cardToDiscard = effectiveHand[cardIndex] ?? currentPlayer.hand[cardIndex];
+    if (!cardToDiscard) return;
     console.log('🗑️ カードをディスカード中:', cardToDiscard);
 
     try {
@@ -307,6 +314,7 @@ export function GameBoard({ room, players, currentPlayerId }: GameBoardProps) {
                 }
                 selectedCardIndex={selectedHandCard ?? undefined}
                 lastDrawnCardInstance={topPlayer.player.player_number === room.current_turn_player ? lastDrawnCardInstance : null}
+                displayHand={topPlayer.player.id === currentPlayerId ? effectiveHand : undefined}
                 guidanceText={topPlayer.player.player_number === room.current_turn_player && hasDrawn && (turnPhase === 'decide' || turnPhase === 'choose_card') ? '手札の中から、場に出すカードを1枚選んでクリックしてください。' : undefined}
               />
             </div>
@@ -329,6 +337,7 @@ export function GameBoard({ room, players, currentPlayerId }: GameBoardProps) {
                   }
                   selectedCardIndex={selectedHandCard ?? undefined}
                   lastDrawnCardInstance={leftPlayer.player.player_number === room.current_turn_player ? lastDrawnCardInstance : null}
+                  displayHand={leftPlayer.player.id === currentPlayerId ? effectiveHand : undefined}
                   guidanceText={leftPlayer.player.player_number === room.current_turn_player && hasDrawn && (turnPhase === 'decide' || turnPhase === 'choose_card') ? '手札の中から、場に出すカードを1枚選んでクリックしてください。' : undefined}
                 />
               </div>
@@ -402,6 +411,7 @@ export function GameBoard({ room, players, currentPlayerId }: GameBoardProps) {
                   }
                   selectedCardIndex={selectedHandCard ?? undefined}
                   lastDrawnCardInstance={rightPlayer.player.player_number === room.current_turn_player ? lastDrawnCardInstance : null}
+                  displayHand={rightPlayer.player.id === currentPlayerId ? effectiveHand : undefined}
                   guidanceText={rightPlayer.player.player_number === room.current_turn_player && hasDrawn && (turnPhase === 'decide' || turnPhase === 'choose_card') ? '手札の中から、場に出すカードを1枚選んでクリックしてください。' : undefined}
                 />
               </div>
@@ -424,6 +434,7 @@ export function GameBoard({ room, players, currentPlayerId }: GameBoardProps) {
                 }
                 selectedCardIndex={selectedHandCard ?? undefined}
                 lastDrawnCardInstance={bottomPlayer.player.player_number === room.current_turn_player ? lastDrawnCardInstance : null}
+                displayHand={bottomPlayer.player.id === currentPlayerId ? effectiveHand : undefined}
                 guidanceText={bottomPlayer.player.player_number === room.current_turn_player && hasDrawn && (turnPhase === 'decide' || turnPhase === 'choose_card') ? '手札の中から、場に出すカードを1枚選んでクリックしてください。' : undefined}
               />
             </div>
